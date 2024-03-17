@@ -43,7 +43,7 @@ const Index = () => {
   };
 
   return (
-    <Center h="100vh">
+    <Center h="100vh" bg="red.500">
       <Box>
         <Heading mb={4} textAlign="center">
           Tic Tac Toe
