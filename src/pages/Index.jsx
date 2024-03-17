@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { Box, Button, Center, Grid, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Grid, Heading, Text, VStack } from "@chakra-ui/react";
 
 const Index = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [player, setPlayer] = useState("X");
+  const [bgColor, setBgColor] = useState("red.500");
+
+  const switchColor = () => {
+    if (bgColor === "red.500") {
+      setBgColor("green.500");
+    } else if (bgColor === "green.500") {
+      setBgColor("black");
+    } else {
+      setBgColor("red.500");
+    }
+  };
 
   const handleClick = (index) => {
     if (board[index] === null && !calculateWinner(board)) {
@@ -43,34 +54,39 @@ const Index = () => {
   };
 
   return (
-    <Center h="100vh" bg="red.500">
-      <Box>
-        <Heading mb={4} textAlign="center">
-          Tic Tac Toe
-        </Heading>
-        <Grid templateColumns="repeat(3, 1fr)" gap={2} mb={4}>
-          {board.map((cell, index) => (
-            <Button key={index} onClick={() => handleClick(index)} variant="outline" size="lg" fontSize="4xl" fontWeight="bold" h="100px" w="100px" disabled={cell !== null || winner !== null}>
-              {cell}
+    <Center h="100vh" bg={bgColor}>
+      <VStack spacing={4}>
+        <Box>
+          <Heading mb={4} textAlign="center">
+            Tic Tac Toe
+          </Heading>
+          <Grid templateColumns="repeat(3, 1fr)" gap={2} mb={4}>
+            {board.map((cell, index) => (
+              <Button key={index} onClick={() => handleClick(index)} variant="outline" size="lg" fontSize="4xl" fontWeight="bold" h="100px" w="100px" disabled={cell !== null || winner !== null}>
+                {cell}
+              </Button>
+            ))}
+          </Grid>
+          {winner && (
+            <Text mb={4} fontSize="2xl" fontWeight="bold" textAlign="center">
+              Player {winner} wins!
+            </Text>
+          )}
+          {isBoardFull && !winner && (
+            <Text mb={4} fontSize="2xl" fontWeight="bold" textAlign="center">
+              It's a draw!
+            </Text>
+          )}
+          <Center>
+            <Button onClick={resetGame} colorScheme="blue">
+              Reset Game
             </Button>
-          ))}
-        </Grid>
-        {winner && (
-          <Text mb={4} fontSize="2xl" fontWeight="bold" textAlign="center">
-            Player {winner} wins!
-          </Text>
-        )}
-        {isBoardFull && !winner && (
-          <Text mb={4} fontSize="2xl" fontWeight="bold" textAlign="center">
-            It's a draw!
-          </Text>
-        )}
-        <Center>
-          <Button onClick={resetGame} colorScheme="blue">
-            Reset Game
-          </Button>
-        </Center>
-      </Box>
+          </Center>
+        </Box>
+        <Button onClick={switchColor} colorScheme="blue">
+          Switch Color
+        </Button>
+      </VStack>
     </Center>
   );
 };
